@@ -1,3 +1,4 @@
+import os    #這個題目沒有給喔
 import pandas as pd
 
 from scipy import misc
@@ -16,6 +17,8 @@ plt.style.use('ggplot')
 #
 # .. your code here .. 
 
+samples=[]
+
 #
 # TODO: Write a for-loop that iterates over the images in the
 # Module4/Datasets/ALOI/32/ folder, appending each of them to
@@ -29,7 +32,12 @@ plt.style.use('ggplot')
 # effect on the algorithm's results.
 #
 # .. your code here .. 
-
+path='Datasets/ALOI/32/'
+for name in os.listdir(path):
+    img=misc.imread(path+name)
+    img=img[::2,::2]
+    img=(img/255.0).reshape(-1)
+    samples.append(img)
 
 #
 # TODO: Once you're done answering the first three questions,
@@ -39,13 +47,21 @@ plt.style.use('ggplot')
 # assignment and answer the final question below.
 #
 # .. your code here .. 
+add_img_path='Datasets/ALOI/32i/'
+
+for name in os.listdir(add_img_path):
+    img=misc.imread(add_img_path+name)
+    img=img[::2,::2]
+    img=(img/255.0).reshape(-1)
+    samples.append(img)
+
 
 
 #
 # TODO: Convert the list to a dataframe
 #
 # .. your code here .. 
-
+df=pd.DataFrame(samples)
 
 
 #
@@ -53,6 +69,10 @@ plt.style.use('ggplot')
 # to three components, using K=6 for your neighborhood size
 #
 # .. your code here .. 
+from sklearn.manifold import Isomap
+iso=Isomap(n_neighbors=6,n_components=3)
+iso.fit(df)
+manifold=iso.transform(df)
 
 
 
@@ -62,7 +82,7 @@ plt.style.use('ggplot')
 # isomap components
 #
 # .. your code here .. 
-
+plt.scatter(manifold[:, 0], manifold[:, 1], marker='o',c='blue')
 
 
 
@@ -71,6 +91,9 @@ plt.style.use('ggplot')
 # can use either 'o' or '.' as your marker:
 #
 # .. your code here .. 
+fig=plt.figure()
+ax=fig.add_subplot(111,projection='3d')
+ax.scatter(manifold[:,0],manifold[:,1],manifold[:,2],c='green')
 
 
 

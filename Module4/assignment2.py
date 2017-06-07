@@ -4,8 +4,7 @@ import matplotlib
 import assignment2_helper as helper
 
 # Look pretty...
-# matplotlib.style.use('ggplot')
-plt.style.use('ggplot')
+matplotlib.style.use('ggplot')
 
 
 # Do * NOT * alter this line, until instructed!
@@ -16,11 +15,11 @@ scaleFeatures = False
 # Rows that have a nan. You should be a pro at this
 # by now ;-)
 #
-# QUESTION: Should the id column be included as a
-# feature?
-#
 # .. your code here ..
 
+df = pd.read_csv('Datasets/kidney_disease.csv')
+
+df = df.dropna(axis=0)
 
 
 # Create some color coded labels; the actual label feature
@@ -34,10 +33,12 @@ labels = ['red' if i=='ckd' else 'green' for i in df.classification]
 #
 # .. your code here ..
 
+df = df.loc[:, ['bgr', 'wc', 'rc']]
 
 
-# TODO: Print out and check your dataframe's dtypes. You'll might
-# want to set a breakpoint after you print it out so you can stop the
+
+# TODO: Print out and check your dataframe's dtypes. You'll probably
+# want to call 'exit()' after you print it out so you can stop the
 # program's execution.
 #
 # You can either take a look at the dataset webpage in the attribute info
@@ -48,6 +49,9 @@ labels = ['red' if i=='ckd' else 'green' for i in df.classification]
 # an appropriate command to coerce these features into the right type.
 #
 # .. your code here ..
+
+for i in df.columns:
+    df.loc[:, i] = pd.to_numeric(df.loc[:, i], errors='coerce')
 
 
 
@@ -61,6 +65,11 @@ labels = ['red' if i=='ckd' else 'green' for i in df.classification]
 # you probably didn't complete the previous step properly.
 #
 # .. your code here ..
+
+for i in range(len(df.columns)):
+    print(df.iloc[:, i].var())
+    
+print(df.describe())
 
 
 
@@ -79,6 +88,12 @@ if scaleFeatures: df = helper.scaleFeatures(df)
 #
 # .. your code here ..
 
+from sklearn.decomposition import PCA
+
+pca = PCA(n_components=2)
+pca.fit(df)
+T = pca.transform(df)
+
 
 # Plot the transformed data as a scatter plot. Recall that transforming
 # the data will result in a NumPy NDArray. You can either use MatPlotLib
@@ -90,10 +105,9 @@ if scaleFeatures: df = helper.scaleFeatures(df)
 #
 # Since we transformed via PCA, we no longer have column names. We know we
 # are in P.C. space, so we'll just define the coordinates accordingly:
+
 ax = helper.drawVectors(T, pca.components_, df.columns.values, plt, scaleFeatures)
 T = pd.DataFrame(T)
 T.columns = ['component1', 'component2']
 T.plot.scatter(x='component1', y='component2', marker='o', c=labels, alpha=0.75, ax=ax)
 plt.show()
-
-

@@ -27,47 +27,53 @@ armadillo = pd.DataFrame({
 
 
 def do_PCA(armadillo):
-  #
-  # TODO: Write code to import the libraries required for PCA.
-  # Then, train your PCA on the armadillo dataframe. Finally,
-  # drop one dimension (reduce it down to 2D) and project the
-  # armadillo down to the 2D principal component feature space.
-  #
-  # NOTE: Be sure to RETURN your projected armadillo! 
-  # (This projection is actually stored in a NumPy NDArray and
-  # not a Pandas dataframe, which is something Pandas does for
-  # you automatically. =)
-  #
-  # .. your code here ..
+#
+# TODO: Write code to import the libraries required for PCA.
+# Then, train your PCA on the armadillo dataframe. Finally,
+# drop one dimension (reduce it down to 2D) and project the
+# armadillo down to the 2D principal component feature space.
+#
+# NOTE: Be sure to RETURN your projected armadillo! 
+# (This projection is actually stored in a NumPy NDArray and
+# not a Pandas dataframe, which is something Pandas does for
+# you automatically. =)
+#
+# .. your code here ..
 
-  return None
-
+    from sklearn.decomposition import PCA
+    pca = PCA(n_components=2)
+    pca.fit(armadillo)
+    A = pca.transform(armadillo)
+    return A
 
 def do_RandomizedPCA(armadillo):
-  #
-  # TODO: Write code to import the libraries required for
-  # RandomizedPCA. Then, train your RandomizedPCA on the armadillo
-  # dataframe. Finally, drop one dimension (reduce it down to 2D)
-  # and project the armadillo down to the 2D principal component
-  # feature space.
-  #
-  # NOTE: Be sure to RETURN your projected armadillo! 
-  # (This projection is actually stored in a NumPy NDArray and
-  # not a Pandas dataframe, which is something Pandas does for
-  # you automatically. =)
-  #
-  # NOTE: SKLearn deprecated the RandomizedPCA method, but still
-  # has instructions on how to use randomized (truncated) method
-  # for the SVD solver. To find out how to use it, set `svd_solver`
-  # to 'randomized' and check out the full docs here
-  #
-  # http://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html
-  #
-  # Deprecated Method: http://scikit-learn.org/stable/modules/generated/sklearn.decomposition.RandomizedPCA.html
-  #
-  # .. your code here ..
+# TODO: Write code to import the libraries required for
+# RandomizedPCA. Then, train your RandomizedPCA on the armadillo
+# dataframe. Finally, drop one dimension (reduce it down to 2D)
+# and project the armadillo down to the 2D principal component
+# feature space.
+# NOTE: Be sure to RETURN your projected armadillo! 
+# (This projection is actually stored in a NumPy NDArray and
+# not a Pandas dataframe, which is something Pandas does for
+# you automatically. =)
+#
+# NOTE: SKLearn deprecated the RandomizedPCA method, but still
+# has instructions on how to use randomized (truncated) method
+# for the SVD solver. To find out how to use it, set `svd_solver`
+# to 'randomized' and check out the full docs here
+#
+# http://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html
+#
+# Deprecated Method: http://scikit-learn.org/stable/modules/generated/sklearn.decomposition.RandomizedPCA.html
+#
+# .. your code here ..
+    
+    from sklearn.decomposition import RandomizedPCA
+    rpca=RandomizedPCA(n_components = 2)
+    rpca.fit(armadillo)
+    R = rpca.transform(armadillo)
+    return R
 
-  return None
 
 
 
@@ -91,10 +97,10 @@ time_delta = datetime.datetime.now() - t1
 
 # Render the newly transformed PCA armadillo!
 if not pca is None:
-  fig = plt.figure()
-  ax = fig.add_subplot(111)
-  ax.set_title('PCA, build time: ' + str(time_delta))
-  ax.scatter(pca[:,0], pca[:,1], c='blue', marker='.', alpha=0.75)
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    ax.set_title('PCA, build time: ' + str(time_delta))
+    ax.scatter(pca[:,0], pca[:,1], c='blue', marker='.', alpha=0.75)
 
 
 
@@ -105,10 +111,10 @@ time_delta = datetime.datetime.now() - t1
 
 # Render the newly transformed RandomizedPCA armadillo!
 if not rpca is None:
-  fig = plt.figure()
-  ax = fig.add_subplot(111)
-  ax.set_title('RandomizedPCA, build time: ' + str(time_delta))
-  ax.scatter(rpca[:,0], rpca[:,1], c='red', marker='.', alpha=0.75)
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    ax.set_title('RandomizedPCA, build time: ' + str(time_delta))
+    ax.scatter(rpca[:,0], rpca[:,1], c='red', marker='.', alpha=0.75)
 
 
 plt.show()
